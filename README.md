@@ -1,6 +1,6 @@
-# Django Bootstrap
+# django-bootstrap
 
-This is a Django bootstrap repo, running the ASGI server.
+This is a Django repo for bootstrapping, running the ASGI server.
 
 It may act as a template to get a dockerised backend setup quickly.
 
