@@ -9,10 +9,11 @@ It may act as a template to get a dockerised async Django backend setup quickly.
 ## Architecture
 
 - Docker
-- uvicorn (ASGI)
+- Uvicorn (ASGI)
 - Django
 - Django Rest Framework
-- pytest
+- Pytest
+- Loguru
 
 ## Setup
 
