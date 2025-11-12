@@ -1,4 +1,4 @@
-# django-bootstrap
+# django-asgi
 
 This is a Django repo for bootstrapping, running the ASGI server.
 
