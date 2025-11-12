@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a Django repo for bootstrapping, running the ASGI server.
+This is a Django repo for bootstrapping projects running the ASGI server.
 
 It may act as a template to get a dockerised async Django backend setup quickly.
 
@@ -40,7 +40,7 @@ Set your variables accordingly:
 1. `DJANGO_PROJECT_NAME`
    Set your Django project name by replace this value (default `project`).
 
-IMPORTANT: Do not change this value after first spinning up Docker; a new project will be created with `django-admin startproject ${DJANGO_PROJECT_NAME}` if the project name value and its settings file doesn't exist. Alternatively, hardcode your preferred name and remove all instances of the var (recommended for more established projects).
+IMPORTANT: Do not change this value after first spinning up Docker; a new project will be created with `django-admin startproject ${DJANGO_PROJECT_NAME}` if the named project directory and its settings file do not exist. Alternatively, hardcode your preferred name and remove all instances of the var (recommended for more established projects).
 
 2. `DEBUG`
    Set `DEBUG=1` for development (default `1`). This is both for Django dev and to direct uvicorn to reload file changes.
@@ -59,7 +59,7 @@ Use `ctrl+c` in the terminal running the containers to shutdown and exit.
 
 ### Testing
 
-This setup uses `pytest` rather that Django's built in test functionality. I find it has a cleaner syntax and better async support, and parametrisation is a big win.
+This setup uses `pytest` rather that Django's built in test framework. I find it has a cleaner syntax and better async support, and parametrisation is a big win.
 
 A separate test database volume and docker compose file are used to run tests. This makes clear separation of test and development databases, and mirrors how tests ought to be run in production. To run tests, use the `docker-compose.test.yml`:
 
@@ -83,5 +83,7 @@ Run these from root like a command, e.g.:
 ```sh
 bin/test
 ```
+
+Feel free to add to and/or pair back this setup to your heart's content.
 
 Made by @chilico
