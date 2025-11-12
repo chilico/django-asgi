@@ -1,5 +1,6 @@
 services:
-  db:
+  django_db:
+    container_name: django_db
     image: postgres:14.0-alpine
     restart: always
     volumes:
@@ -17,27 +18,28 @@ services:
       retries: 5
 
   django_web:
+    container_name: django_web
     build:
       dockerfile: Dockerfile
       context: .
-    container_name: django_web
     ports:
       - "${PORT:-8080}:8080"
     environment:
+      - DJANGO_PROJECT_NAME=project # set this as your project name ONCE only
+      - WORKERS=1
       - BASE_URL=https://localhost:8080
-      - DATABASE_URL=postgresql://django:django@db:5432/django
+      - DATABASE_URL=postgresql://django:django@django_db:5432/django
       - POSTGRES_NAME=django
       - POSTGRES_USER=django
       - POSTGRES_PASSWORD=django
-      - POSTGRES_HOST=db
+      - POSTGRES_HOST=django_db
       - POSTGRES_PORT=5432
     env_file:
       - .env
     volumes:
       - ./src:/app
-      # - ./certs:/certs
     depends_on:
-      db:
+      django_db:
         condition: service_healthy
 
 volumes:

@@ -1,19 +1,22 @@
 #!/bin/bash
 set -e
 
-PROJECT_DIR="./project"
-
-# create project if missing
-if [ ! -f "$PROJECT_DIR/settings.py" ]; then
-  echo "No Django project found. Creating one at $PROJECT_DIR..."
-  django-admin startproject project .
-fi
+# configuration from env vars
+PROJECT_NAME=${DJANGO_PROJECT_NAME:-project}
+WORKERS=${WORKERS:-1}
+PORT=${PORT:-8080}
 
 echo "Waiting for PostgreSQL to be ready..."
-while ! nc -z db 5432; do
+while ! nc -z django_db 5432; do
   sleep 0.1
 done
-echo "PostgreSQL is ready!"
+echo "PostgreSQL is ready"
+
+# create project if missing / first initialisation
+if [ ! -f "$PROJECT_NAME/settings.py" ]; then
+  echo "No Django project found. Creating '$PROJECT_NAME'..."
+  django-admin startproject $PROJECT_NAME .
+fi
 
 echo "Running Migrations..."
 python manage.py migrate --noinput
@@ -22,6 +25,4 @@ echo "Collecting static files..."
 python manage.py collectstatic --noinput --clear
 
 echo "Starting Django App with Uvicorn (ASGI)..."
-
-# replace 'project' with your actual Django project name
-uvicorn project.asgi:application --host 0.0.0.0 --port 8080 --workers 3 --log-level info
+uvicorn ${PROJECT_NAME}.asgi:application --host 0.0.0.0 --port $PORT --workers $WORKERS

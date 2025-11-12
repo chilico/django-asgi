@@ -11,6 +11,10 @@ uvicorn = "*"
 whitenoise = "*"
 httpx = "*"
 aiofiles = "*"
+pydantic = "*"
+pytest = "*"
+loguru = "*"
+asyncio = "*"
 
 [dev-packages]
 

@@ -1,18 +1,12 @@
 import os
 from pathlib import Path
 
-# Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY", "your-secret-key-change-in-production")
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False") == "True"
-
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
-# Application definition
+# app definition
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -20,7 +14,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # Your apps here
 ]
 
 MIDDLEWARE = [
@@ -55,16 +48,16 @@ TEMPLATES = [
 # ASGI application
 ASGI_APPLICATION = "project.asgi.application"
 
-# Database - Sync connection (for ORM)
+# database
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": os.environ.get("POSTGRES_NAME", "django"),
         "USER": os.environ.get("POSTGRES_USER", "django"),
         "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "django"),
-        "HOST": os.environ.get("POSTGRES_HOST", "db"),
+        "HOST": os.environ.get("POSTGRES_HOST", "django_db"),
         "PORT": os.environ.get("POSTGRES_PORT", "5432"),
-        # Optional: Connection pooling for better performance
+        # connection pooling for better performance
         "CONN_MAX_AGE": 600,
         "OPTIONS": {
             "connect_timeout": 10,
@@ -72,8 +65,7 @@ DATABASES = {
     }
 }
 
-# Password valprojecttion
-AUTH_PASSWORD_VALprojectTORS = [
+AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_valprojecttion.UserAttributeSimilarityValprojecttor",
     },
@@ -88,16 +80,18 @@ AUTH_PASSWORD_VALprojectTORS = [
     },
 ]
 
-# Internationalization
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# import at the end to ensure all settings are loaded first
+from project.logging import configure as configure_logging
+
+configure_logging(intercept_django=True, intercept_uvicorn=True)
