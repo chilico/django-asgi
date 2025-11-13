@@ -5,18 +5,18 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_503_SERVICE_UNAVAILABLE, HTTP_200_OK
 
 
+@sync_to_async
+def check_db():
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT 1")
+
+
 @async_api_view(["GET"])
 async def healthcheck(request):
     """
     Health check endpoint to verify service and database connectivity.
     """
     try:
-
-        @sync_to_async
-        def check_db():
-            with connection.cursor() as cursor:
-                cursor.execute("SELECT 1")
-
         await check_db()
 
         return Response(
